@@ -156,7 +156,7 @@ class CocoDataset(utils.Dataset):
                 image_ids.extend(list(coco.getImgIds(catIds=[id])))
             # Remove duplicates
             image_ids = list(set(image_ids))
-	    image_ids = image_ids[1:100]
+            image_ids = image_ids[1:100]
         else:
             # All images
             image_ids = list(coco.imgs.keys())
