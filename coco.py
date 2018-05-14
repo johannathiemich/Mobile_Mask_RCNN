@@ -63,9 +63,9 @@ from mmrcnn import model as modellib,utils
 
 # Directory to save logs and model checkpoints, if not provided
 # through the command line argument --logs
-DEFAULT_WEIGHTS_DIR = os.path.join(ROOT_DIR, "weights")
-DEFAULT_LOGS_DIR = os.path.join(ROOT_DIR, "logs")
-DEFAULT_DATASET_DIR = os.path.join(ROOT_DIR, "data/coco")
+DEFAULT_WEIGHTS_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights"
+DEFAULT_LOGS_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/logs"
+DEFAULT_DATASET_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/coco"
 DEFAULT_DATASET_YEAR = "2017" #"2014"
 
 # Path to trained weights file
@@ -156,9 +156,11 @@ class CocoDataset(utils.Dataset):
                 image_ids.extend(list(coco.getImgIds(catIds=[id])))
             # Remove duplicates
             image_ids = list(set(image_ids))
+	    image_ids = image_ids[1:100]
         else:
             # All images
             image_ids = list(coco.imgs.keys())
+            image_ids = image_ids[1:100]
 
         self.dataset_size = len(image_ids)
 

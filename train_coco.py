@@ -19,9 +19,10 @@ import coco
 
 ## Paths
 ROOT_DIR = os.getcwd()
-MODEL_DIR = os.path.join(ROOT_DIR, "logs")
-COCO_DIR = os.path.join(ROOT_DIR, 'data/coco')
-DEFAULT_MODEL_DIR = os.path.join(MODEL_DIR, "mask_rcnn_256_cocoperson_0283.h5")
+MODEL_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/models"
+COCO_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/coco"
+WEIGHTS_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights"
+DEFAULT_WEIGHTS_DIR = os.path.join(WEIGHTS_DIR, "mask_rcnn_256_cocoperson_0283.h5")
 
 ## Dataset
 class_names = ['person']  # all classes: None
