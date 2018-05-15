@@ -3052,6 +3052,11 @@ class MaskRCNN():
             log(k, v)
         return outputs_np
 
+    def save_weights(self, path):
+	#keras_model = self.keras_model
+        self.keras_model.save_weights(path)
+        return None
+
 
 ############################################################
 #  Data Formatting
