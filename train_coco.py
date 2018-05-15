@@ -89,4 +89,4 @@ model.train(dataset_train, dataset_val,
             epochs=epochs_warmup + epochs_heads + epochs_stage4 + epochs_all,
             layers='all',
             augmentation=augmentation)
-model.save_weights("/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/models/trained_coco.h5")
+model.save_weights("/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights/new_trained_coco.h5")

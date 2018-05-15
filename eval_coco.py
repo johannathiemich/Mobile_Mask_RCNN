@@ -17,8 +17,10 @@ import coco
 
 # Paths
 ROOT_DIR = os.getcwd()
-MODEL_DIR = os.path.join(ROOT_DIR, "logs")
-COCO_DIR = os.path.join(ROOT_DIR, 'data/coco')
+MODEL_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/models"
+COCO_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/coco"
+WEIGHTS_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights"
+DEFAULT_WEIGHTS_DIR = os.path.join(WEIGHTS_DIR, "mask_rcnn_partlytrained_coco.h5")
 NUM_EVALS = 10
 
 # Load Model
@@ -28,7 +30,8 @@ model = modellib.MaskRCNN(mode="inference", config=config, model_dir=MODEL_DIR)
 # Get path to saved weights
 # Either set a specific path or find last trained weights
 #model_path = os.path.join(MODEL_DIR, "mask_rcnn_512_cocoperson_0396.h5")
-model_path = model.find_last()[1]
+#model_path = model.find_last()[1]
+model_path = os.path.join(WEIGHTS_DIR, "new_trained_coco.h5")
 
 # Load trained weights (fill in path to trained weights here)
 assert model_path != "", "Provide path to trained weights"
@@ -36,7 +39,7 @@ print("> Loading weights from {}".format(model_path))
 model.load_weights(model_path, by_name=True)
 
 # Dataset
-class_names = ['person']  # all classes: None
+class_names = None  # all classes: None
 dataset_val = coco.CocoDataset()
 COCO = dataset_val.load_coco(COCO_DIR, "val", class_names=class_names, return_coco=True)
 dataset_val.prepare()
@@ -44,6 +47,10 @@ print("> Running COCO evaluation on {} images.".format(NUM_EVALS))
 coco.evaluate_coco(model, dataset_val, COCO, "bbox", limit=NUM_EVALS)
 model.keras_model.save(MODEL_DIR+"/mobile_mask_rcnn_{}.h5".format(config.NAME))
 
+#preparing train Dataset
+dataset_train = coco.CocoDataset()
+dataset_train.load_coco(COCO_DIR, "train", class_names=class_names)
+dataset_train.prepare()
 
 # Test on a random image
 image_id = random.choice(dataset_val.image_ids)
