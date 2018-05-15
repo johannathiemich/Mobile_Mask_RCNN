@@ -12,6 +12,7 @@ tensorboard --logdir="$(pwd)"
 import os
 import sys
 import imgaug
+import time
 
 ## Import Mobile Mask R-CNN
 from mmrcnn import model as modellib, utils
@@ -25,7 +26,7 @@ WEIGHTS_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights"
 DEFAULT_WEIGHTS_DIR = os.path.join(WEIGHTS_DIR, "mask_rcnn_256_cocoperson_0283.h5")
 
 ## Dataset
-class_names = ['person']  # all classes: None
+class_names = None  # all classes: None
 dataset_train = coco.CocoDataset()
 dataset_train.load_coco(COCO_DIR, "train", class_names=class_names)
 dataset_train.prepare()
@@ -89,4 +90,7 @@ model.train(dataset_train, dataset_val,
             epochs=epochs_warmup + epochs_heads + epochs_stage4 + epochs_all,
             layers='all',
             augmentation=augmentation)
-model.save_weights("/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights/new_trained_coco.h5")
+
+moment=time.strftime("%Y-%b-%d__%H_%M_%S",time.localtime())
+model.save_weights("/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights/trained_coco_{}.h5".format(moment))
+#model.save_weights("/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights/new_trained_coco.h5")
