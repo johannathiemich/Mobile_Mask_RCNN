@@ -34,7 +34,8 @@ model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR
 model.load_weights(model_path, by_name=True)
 print("successfully loaded model")
 start = datetime.now()
-image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
+#image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
+image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "gray.jpg"))
 # Run detection
 result = model.detect([image], verbose=1)
 print("Time taken for detection: {}".format(datetime.now() - start))
