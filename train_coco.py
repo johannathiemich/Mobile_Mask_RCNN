@@ -26,7 +26,7 @@ WEIGHTS_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights"
 DEFAULT_WEIGHTS_DIR = os.path.join(WEIGHTS_DIR, "mask_rcnn_256_cocoperson_0283.h5")
 
 ## Dataset
-class_names = None  # all classes: None
+class_names = None #['person']  # all classes: None
 dataset_train = coco.CocoDataset()
 dataset_train.load_coco(COCO_DIR, "train", class_names=class_names)
 dataset_train.prepare()
@@ -50,12 +50,27 @@ model.load_weights(model_path, by_name=True)
 ## Training - Config
 starting_epoch = model.epoch
 epoch = dataset_train.dataset_size // (config.STEPS_PER_EPOCH * config.BATCH_SIZE)
-epochs_warmup =  epoch // 2 #+ starting_epoch
-epochs_heads = 5 * epoch #+ starting_epoch
-epochs_stage4 = 5 * epoch #+ starting_epoch
-epochs_all = 5 * epoch #+ starting_epoch
-
+epochs_warmup = 1* epoch
+epochs_heads = 7 * epoch #+ starting_epoch
+epochs_stage4 = 7 * epoch #+ starting_epoch
+epochs_all = 7 * epoch #+ starting_epoch
+epochs_breakOfDawn = 5 * epoch
 augmentation = imgaug.augmenters.Fliplr(0.5)
+print("> Training Schedule: \
+    \nwarmup: {} epochs \
+    \nheads: {} epochs \
+    \nstage4+: {} epochs \
+    \nall layers: {} epochs \
+    \ntill the break of Dawn: {} epochs".format(
+    epochs_warmup,epochs_heads,epochs_stage4,epochs_all,epochs_breakOfDawn))
+
+## Training - WarmUp
+print("> Warmup all layers")
+model.train(dataset_train, dataset_val,
+            learning_rate=config.LEARNING_RATE / 10,
+            epochs=epochs_warmup,
+            layers='all',
+            augmentation=augmentation)
 
 ## Training - WarmUp Stage
 print("> Warm Up all layers")
@@ -91,6 +106,17 @@ model.train(dataset_train, dataset_val,
             layers='all',
             augmentation=augmentation)
 
+
 moment=time.strftime("%Y-%b-%d__%H_%M_%S",time.localtime())
 model.save_weights("/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights/trained_coco_{}.h5".format(moment))
 #model.save_weights("/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights/new_trained_coco.h5")
+
+## Training - Stage 3
+# Fine tune all layers
+print("> Fine tune all layers till the break of Dawn")
+model.train(dataset_train, dataset_val,
+            learning_rate=config.LEARNING_RATE / 100,
+            epochs=epochs_warmup + epochs_heads + epochs_stage4 + epochs_all + epochs_breakOfDawn,
+            layers='all',
+            augmentation=augmentation)
+

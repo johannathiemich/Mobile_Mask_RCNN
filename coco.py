@@ -82,14 +82,14 @@ class CocoConfig(Config):
     to the COCO dataset.
     """
     ## Give the configuration a recognizable name
-    NAME = "cocoperson"
+    NAME = "coco"
 
     ## GPU
     IMAGES_PER_GPU = 1
-    GPU_COUNT = 1
+    GPU_COUNT = 2
 
     ## Number of classes (including background)
-    NUM_CLASSES = 1 + 1
+    NUM_CLASSES = 1 + 80
 
     ## Backbone Architecture
     BACKBONE = "mobilenetv1"
@@ -110,11 +110,11 @@ class CocoConfig(Config):
     }
 
     ## Steps
-    STEPS_PER_EPOCH = 1000
+    STEPS_PER_EPOCH = 10000
     VALIDATION_STEPS = 50
 
     ## Additions
-    TRAIN_BN = False
+    TRAIN_BN = True
 
 
 ############################################################

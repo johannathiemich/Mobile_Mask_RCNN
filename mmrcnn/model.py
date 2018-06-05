@@ -1252,8 +1252,7 @@ def _timedistributed_depthwise_conv_block(inputs, pointwise_conv_filters, stride
     but with each layer wrapped in a TimeDistributed layer,
     used to build the computation graph of the mask head of the FPN.
     """
-    #channel_axis = 1 if K.image_data_format() == 'channels_first' else -1
-    channel_axis = 3
+    channel_axis = 1 if K.image_data_format() == 'channels_first' else -1
 
     # Depthwise
     x = KL.TimeDistributed(KL.DepthwiseConv2D(
@@ -2780,15 +2779,19 @@ class MaskRCNN():
 
         # Translate normalized coordinates in the resized image to pixel
         # coordinates in the original image before resizing
+        #print("original_image_shape: ",original_image_shape) #DEBUGGING
+        #print("image_shape: ",image_shape) #DEBUGGING
+        #print("window before norm: ",window) #DEBUGGING
         window = utils.norm_boxes(window, image_shape[:2])
+        #print("window after norm: ",window) #DEBUGGING
         wy1, wx1, wy2, wx2 = window
         shift = np.array([wy1, wx1, wy1, wx1])
         wh = wy2 - wy1  # window height
         ww = wx2 - wx1  # window width
         scale = np.array([wh, ww, wh, ww])
+        #print("scale: ",scale) #DEBUGGING
         # Convert boxes to normalized coordinates on the window
-        # ZERO DIVISION
-        boxes = np.divide(boxes - shift, scale)
+        boxes = np.divide(boxes - shift, scale) # ZERO DIVISION
         # Convert boxes to pixel coordinates on the original image
         boxes = utils.denorm_boxes(boxes, original_image_shape[:2])
 
