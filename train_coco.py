@@ -51,9 +51,12 @@ model.load_weights(model_path, by_name=True)
 starting_epoch = model.epoch
 epoch = dataset_train.dataset_size // (config.STEPS_PER_EPOCH * config.BATCH_SIZE)
 epochs_warmup = 1* epoch
-epochs_heads = 7 * epoch #+ starting_epoch
-epochs_stage4 = 7 * epoch #+ starting_epoch
-epochs_all = 7 * epoch #+ starting_epoch
+#epochs_heads = 7 * epoch #+ starting_epoch
+epochs_heads = 2 * epoch + starting_epoch
+epochs_stage4 = 2 * epoch + starting_epoch
+epochs_all = 2 * epoch + starting_epoch
+#epochs_stage4 = 7 * epoch #+ starting_epoch
+#epochs_all = 7 * epoch #+ starting_epoch
 epochs_breakOfDawn = 5 * epoch
 augmentation = imgaug.augmenters.Fliplr(0.5)
 print("> Training Schedule: \
@@ -65,20 +68,20 @@ print("> Training Schedule: \
     epochs_warmup,epochs_heads,epochs_stage4,epochs_all,epochs_breakOfDawn))
 
 ## Training - WarmUp
-print("> Warmup all layers")
-model.train(dataset_train, dataset_val,
-            learning_rate=config.LEARNING_RATE / 10,
-            epochs=epochs_warmup,
-            layers='all',
-            augmentation=augmentation)
+#print("> Warmup all layers")
+#model.train(dataset_train, dataset_val,
+#            learning_rate=config.LEARNING_RATE / 10,
+#            epochs=epochs_warmup,
+#            layers='all',
+#            augmentation=augmentation)
 
 ## Training - WarmUp Stage
-print("> Warm Up all layers")
-model.train(dataset_train, dataset_val,
-            learning_rate=config.LEARNING_RATE / 10,
-            epochs=epochs_warmup,
-            layers='all',
-            augmentation=augmentation)
+#print("> Warm Up all layers")
+#model.train(dataset_train, dataset_val,
+#            learning_rate=config.LEARNING_RATE / 10,
+#            epochs=epochs_warmup,
+#            layers='all',
+#            augmentation=augmentation)
 
 ## Training - Stage 1
 print("> Training network heads")

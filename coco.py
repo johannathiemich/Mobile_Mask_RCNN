@@ -86,7 +86,7 @@ class CocoConfig(Config):
 
     ## GPU
     IMAGES_PER_GPU = 1
-    GPU_COUNT = 2
+    GPU_COUNT = 1
 
     ## Number of classes (including background)
     NUM_CLASSES = 1 + 80
@@ -96,25 +96,25 @@ class CocoConfig(Config):
     BACKBONE_STRIDES = [4, 8, 16, 32, 64]
 
     ## Resolution
-    RES_FACTOR = 2
+    RES_FACTOR = 16
     IMAGE_MAX_DIM = 1024 // RES_FACTOR
     RPN_ANCHOR_SCALES = tuple(np.divide((32, 64, 128, 256, 512),RES_FACTOR))
 
     ## Losses
     LOSS_WEIGHTS = {
-        "rpn_class_loss": 1.,
+        "rpn_class_loss": 0.,
         "rpn_bbox_loss": 1.,
         "mrcnn_class_loss": 1.,
-        "mrcnn_bbox_loss": 1.,
+        "mrcnn_bbox_loss": 0.,
         "mrcnn_mask_loss": 1.
     }
 
     ## Steps
-    STEPS_PER_EPOCH = 10000
+    STEPS_PER_EPOCH = 1000
     VALIDATION_STEPS = 50
 
     ## Additions
-    TRAIN_BN = True
+    TRAIN_BN = False
 
 
 ############################################################

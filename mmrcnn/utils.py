@@ -110,8 +110,8 @@ def compute_overlaps_masks(masks1, masks2):
     #print("mask1: ", masks1) #DEBUGGING
     #print("mask2: ", masks2) #DEBUGGING
     # Condition for empty prediction
-    if not masks1.size:
-        return np.array([[0.]])
+    #if not masks1.size:
+    #    return np.array([[0.]])
 
     # flatten masks
     masks1 = np.reshape(masks1 > .5, (-1, masks1.shape[-1])).astype(np.float32)
@@ -894,7 +894,7 @@ def norm_boxes(boxes, shape):
     Returns:
         [N, (y1, x1, y2, x2)] in normalized coordinates
     """
-    boxes = boxes.astype(np.float32)
+    #boxes = boxes.astype(np.float32)
     h, w = shape
     #print("norm_boxes (h,w): ",h,w) #DEBUGGING
     scale = np.array([h - 1, w - 1, h - 1, w - 1])
@@ -916,7 +916,7 @@ def denorm_boxes(boxes, shape):
     Returns:
         [N, (y1, x1, y2, x2)] in pixel coordinates
     """
-    boxes = boxes.astype(np.float32)
+    #boxes = boxes.astype(np.float32)
     h, w = shape
     scale = np.array([h - 1, w - 1, h - 1, w - 1])
     shift = np.array([0, 0, 1, 1])

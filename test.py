@@ -6,7 +6,7 @@ import coco
 import skimage.io
 from datetime import datetime
 
-WEIGHTS_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights"
+WEIGHTS_DIR = "./weights"
 TEST_PIC_DIR = "./testpictures"
 class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'bus', 'train', 'truck', 'boat', 'traffic light',
@@ -25,7 +25,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'teddy bear', 'hair drier', 'toothbrush']
 
 config = coco.CocoConfig()
-model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-May-15__11_08_18.h5")
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-05__17_50_03.h5")
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
@@ -34,8 +34,10 @@ model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR
 model.load_weights(model_path, by_name=True)
 print("successfully loaded model")
 start = datetime.now()
-#image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
-image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "gray.jpg"))
+image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
+if image is None: 
+    print("image is null")
+#image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "gray.jpg"))
 # Run detection
 result = model.detect([image], verbose=1)
 print("Time taken for detection: {}".format(datetime.now() - start))
