@@ -93,12 +93,12 @@ class CocoConfig(Config):
 
     ## Backbone Architecture
     BACKBONE = "mobilenetv1"
-    BACKBONE_STRIDES = [4, 8, 16, 32, 64]
+    BACKBONE_STRIDES = [8, 16, 32, 64, 128]
 
     ## Resolution
     RES_FACTOR = 16
     IMAGE_MAX_DIM = 1024 // RES_FACTOR
-    RPN_ANCHOR_SCALES = tuple(np.divide((32, 64, 128, 256, 512),RES_FACTOR))
+    RPN_ANCHOR_SCALES = tuple(np.divide((16, 32, 64, 128, 256),RES_FACTOR))
     IMAGE_MIN_DIM = 50
     IMAGE_MAX_DIM = 64
     TRAIN_ROIS_PER_IMAGE = 100
