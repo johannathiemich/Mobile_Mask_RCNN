@@ -2520,6 +2520,10 @@ class MaskRCNN():
         self.keras_model.add_loss(tf.add_n(reg_losses))
 
         # Compile
+        #run_opts = tf.RunOptions(report_tensor_allocations_upon_oom = True)
+        #self.keras_model.compile(
+        #    optimizer=optimizer,
+        #    loss=[None] * len(self.keras_model.outputs), options = run_opts)
         self.keras_model.compile(
             optimizer=optimizer,
             loss=[None] * len(self.keras_model.outputs))
