@@ -99,6 +99,10 @@ class CocoConfig(Config):
     RES_FACTOR = 16
     IMAGE_MAX_DIM = 1024 // RES_FACTOR
     RPN_ANCHOR_SCALES = tuple(np.divide((32, 64, 128, 256, 512),RES_FACTOR))
+    IMAGE_MIN_DIM = 50
+    IMAGE_MAX_DIM = 64
+    TRAIN_ROIS_PER_IMAGE = 100
+    MAX_GT_INSTANCES = 50
 
     ## Losses
     LOSS_WEIGHTS = {
