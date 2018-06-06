@@ -20,7 +20,8 @@ import coco
 
 ## Paths
 ROOT_DIR = os.getcwd()
-MODEL_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/models"
+#MODEL_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/models"
+MODEL_DIR = "./weights"
 COCO_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/coco"
 WEIGHTS_DIR = "/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights"
 DEFAULT_WEIGHTS_DIR = os.path.join(WEIGHTS_DIR, "mask_rcnn_256_cocoperson_0283.h5")
@@ -41,11 +42,11 @@ model = modellib.MaskRCNN(mode="training", model_dir = MODEL_DIR, config=config)
 model.keras_model.summary()
 
 ## Weights
-model_path = model.get_imagenet_weights()
+#model_path = model.get_imagenet_weights()
 #model_path = model.find_last()[1]
 #model_path = DEFAULT_MODEL_DIR
-print("> Loading weights from {}".format(model_path))
-model.load_weights(model_path, by_name=True)
+#print("> Loading weights from {}".format(model_path))
+#model.load_weights(model_path, by_name=True)
 
 ## Training - Config
 starting_epoch = model.epoch
@@ -111,7 +112,7 @@ model.train(dataset_train, dataset_val,
 
 
 moment=time.strftime("%Y-%b-%d__%H_%M_%S",time.localtime())
-model.save_weights("/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights/trained_coco_{}.h5".format(moment))
+model.save_weights("{}/trained_coco_{}.h5".format(MODEL_DIR, moment))
 #model.save_weights("/net4/merkur/storage/deeplearning/users/thiemi/mmrcnn/weights/new_trained_coco.h5")
 
 ## Training - Stage 3

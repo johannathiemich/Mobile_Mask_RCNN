@@ -5,7 +5,12 @@ import numpy as np
 import coco
 import skimage.io
 from datetime import datetime
+import psutil
 
+pid = os.getpid()
+py = psutil.Process(pid)
+memoryUse = py.get_memory_info()[0]/2.**30
+print("Memory use:", memoryUse)
 WEIGHTS_DIR = "./weights"
 TEST_PIC_DIR = "./testpictures"
 class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
@@ -25,7 +30,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'teddy bear', 'hair drier', 'toothbrush']
 
 config = coco.CocoConfig()
-model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-06__09_40_25.h5")
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-06__11_58_46.h5")
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
@@ -38,6 +43,9 @@ image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg")
 if image is None: 
     print("image is null")
 #image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "gray.jpg"))
+memoryUse = py.get_memory_info()[0]/2.**30
+print("Memory use:", memoryUse)
+
 # Run detection
 result = model.detect([image], verbose=1)
 print("Time taken for detection: {}".format(datetime.now() - start))

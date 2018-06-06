@@ -523,7 +523,7 @@ if __name__ == '__main__':
 
     # Load weights
     print("> Loading weights from {} ".format(model_path))
-    model.load_weights(model_path, by_name=True)
+    #model.load_weights(model_path, by_name=True)
 
     # Train or evaluate
     if args.command == "train":
