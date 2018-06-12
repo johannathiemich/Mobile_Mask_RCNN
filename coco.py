@@ -93,7 +93,7 @@ class CocoConfig(Config):
 
     ## Backbone Architecture
     BACKBONE = "mobilenetv1"
-    BACKBONE_STRIDES = [8, 16, 32, 64, 128]
+    BACKBONE_STRIDES = [4, 8, 16, 32, 64]
 
     ## Resolution
     RES_FACTOR = 16
@@ -101,8 +101,9 @@ class CocoConfig(Config):
     RPN_ANCHOR_SCALES = tuple(np.divide((16, 32, 64, 128, 256),RES_FACTOR))
     IMAGE_MIN_DIM = 50
     IMAGE_MAX_DIM = 64
-    TRAIN_ROIS_PER_IMAGE = 100
-    MAX_GT_INSTANCES = 50
+    TRAIN_ROIS_PER_IMAGE = 10
+    MAX_GT_INSTANCES = 10
+    #IMAGE_RESIZE_MODE = "crop"
 
     ## Losses
     LOSS_WEIGHTS = {
