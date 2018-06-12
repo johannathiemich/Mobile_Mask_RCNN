@@ -93,7 +93,7 @@ class CocoConfig(Config):
 
     ## Backbone Architecture
     BACKBONE = "mobilenetv1"
-    BACKBONE_STRIDES = [4, 8, 16, 32, 64]
+    BACKBONE_STRIDES = [16, 32, 64, 128, 256]
 
     ## Resolution
     RES_FACTOR = 16
