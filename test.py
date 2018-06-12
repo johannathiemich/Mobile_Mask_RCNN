@@ -6,11 +6,12 @@ import coco
 import skimage.io
 from datetime import datetime
 import psutil
+import cv2
 
 pid = os.getpid()
 py = psutil.Process(pid)
-memoryUse = py.get_memory_info()[0]/2.**30
-print("Memory use:", memoryUse)
+#memoryUse = py.get_memory_info()[0]/2.**30
+#print("Memory use:", memoryUse)
 WEIGHTS_DIR = "./weights"
 TEST_PIC_DIR = "./testpictures"
 class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
@@ -38,16 +39,26 @@ model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR
 # returns a compiled model
 model.load_weights(model_path, by_name=True)
 print("successfully loaded model")
-start = datetime.now()
-image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
+
+#image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
+
+image = cv2.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
+height, width = image.shape[:2]
+if height > width:
+    r = 64 / height
+    small = cv2.resize(image, (int(width * r)  , 64))
+else:
+    r = 64 / width
+    small = cv2.resize(image, (64, int(height * r)))
 if image is None: 
     print("image is null")
 #image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "gray.jpg"))
-memoryUse = py.get_memory_info()[0]/2.**30
-print("Memory use:", memoryUse)
+#memoryUse = py.get_memory_info()[0]/2.**30
+#print("Memory use:", memoryUse)
 
 # Run detection
-result = model.detect([image], verbose=1)
+start = datetime.now()
+result = model.detect([small], verbose=1)
 print("Time taken for detection: {}".format(datetime.now() - start))
 
 r = result[0]
