@@ -1167,7 +1167,7 @@ def rpn_graph(feature_map, anchors_per_location, anchor_stride):
 
     return [rpn_class_logits, rpn_probs, rpn_bbox]
 
-
+#RPN_ANCHOR_STRIDE, len(config.RPN_ANCHOR_RATIOS), RPN_MODEL_FILTERS
 def build_rpn_model(anchor_stride, anchors_per_location, depth):
     """Builds a Keras model of the Region Proposal Network.
     It wraps the RPN graph so it can be used multiple times with shared
@@ -1186,6 +1186,7 @@ def build_rpn_model(anchor_stride, anchors_per_location, depth):
     """
     input_feature_map = KL.Input(shape=[None, None, depth],
                                  name="input_rpn_feature_map")
+    
     outputs = rpn_graph(input_feature_map, anchors_per_location, anchor_stride)
     return KM.Model([input_feature_map], outputs, name="rpn_model")
 
@@ -1278,7 +1279,7 @@ def _timedistributed_depthwise_conv_block(inputs, pointwise_conv_filters, stride
                     name='mrcnn_mask_conv_pw_{}_bn'.format(block_id))(x, training=train_bn)
     return KL.Activation(relu6, name='mrcnn_mask_conv_pw_{}_relu'.format(block_id))(x)
 
-def build_fpn_mask_graph(rois, feature_maps, image_meta, pool_size, num_classes, backbone, train_bn):
+def build_fpn_mask_graph(rois, feature_maps, image_meta, pool_size, num_classes, backbone, train_bn, fpn_mask_filters, transpose_conv_num):
     """Builds the computation graph of the mask head of Feature Pyramid Network.
     rois: [batch, num_rois, (y1, x1, y2, x2)] Proposal boxes in normalized
           coordinates.
@@ -1325,12 +1326,12 @@ def build_fpn_mask_graph(rois, feature_maps, image_meta, pool_size, num_classes,
         x = KL.Activation('relu')(x)
 
     if backbone in ['mobilenetv1','mobilenetv2']:
-        x = _timedistributed_depthwise_conv_block(x, 256, block_id = 1, train_bn = train_bn)
-        x = _timedistributed_depthwise_conv_block(x, 256, block_id = 2, train_bn = train_bn)
-        x = _timedistributed_depthwise_conv_block(x, 256, block_id = 3, train_bn = train_bn)
-        x = _timedistributed_depthwise_conv_block(x, 256, block_id = 4, train_bn = train_bn)
+        x = _timedistributed_depthwise_conv_block(x, fpn_mask_filters, block_id = 1, train_bn = train_bn)
+        x = _timedistributed_depthwise_conv_block(x, fpn_mask_filters, block_id = 2, train_bn = train_bn)
+        x = _timedistributed_depthwise_conv_block(x, fpn_mask_filters, block_id = 3, train_bn = train_bn)
+        x = _timedistributed_depthwise_conv_block(x, fpn_mask_filters, block_id = 4, train_bn = train_bn)
 
-    x = KL.TimeDistributed(KL.Conv2DTranspose(256, (2, 2), strides=2, activation="relu"),
+    x = KL.TimeDistributed(KL.Conv2DTranspose(transpose_conv_num, (2, 2), strides=2, activation="relu"),
                            name="mrcnn_mask_deconv")(x)
     x = KL.TimeDistributed(KL.Conv2D(num_classes, (1, 1), strides=1, activation="sigmoid"),
                            name="mrcnn_mask")(x)
@@ -2220,26 +2221,26 @@ class MaskRCNN():
         if config.BACKBONE in ["resnet50", "resnet101"]:
             _, C2, C3, C4, C5 = resnet_graph(input_image, config.BACKBONE, stage5=True, train_bn=config.TRAIN_BN)
         elif config.BACKBONE in ["mobilenetv1"]:
-            _, C2, C3, C4, C5 = mobilenetv1_graph(input_image, config.BACKBONE, alpha=0.1, train_bn=config.TRAIN_BN)
+            _, C2, C3, C4, C5 = mobilenetv1_graph(input_image, config.BACKBONE, alpha=1.0, train_bn=config.TRAIN_BN)
         elif config.BACKBONE in ["mobilenetv2"]:
-            _, C2, C3, C4, C5 = mobilenetv2_graph(input_image, config.BACKBONE, alpha=0.1, train_bn=config.TRAIN_BN)
+            _, C2, C3, C4, C5 = mobilenetv2_graph(input_image, config.BACKBONE, alpha=1.0, train_bn=config.TRAIN_BN)
         # Top-down Layers
         # TODO: add assert to varify feature map sizes match what's in config
-        P5 = KL.Conv2D(256, (1, 1), name='fpn_c5p5')(C5)
+        P5 = KL.Conv2D(config.NUM_FILTERS_CONV, (1, 1), name='fpn_c5p5')(C5)
         P4 = KL.Add(name="fpn_p4add")([
             KL.UpSampling2D(size=(2, 2), name="fpn_p5upsampled")(P5),
-            KL.Conv2D(256, (1, 1), name='fpn_c4p4')(C4)])
+            KL.Conv2D(config.NUM_FILTERS_CONV, (1, 1), name='fpn_c4p4')(C4)])
         P3 = KL.Add(name="fpn_p3add")([
             KL.UpSampling2D(size=(2, 2), name="fpn_p4upsampled")(P4),
-            KL.Conv2D(256, (1, 1), name='fpn_c3p3')(C3)])
+            KL.Conv2D(config.NUM_FILTERS_CONV, (1, 1), name='fpn_c3p3')(C3)])
         P2 = KL.Add(name="fpn_p2add")([
             KL.UpSampling2D(size=(2, 2), name="fpn_p3upsampled")(P3),
-            KL.Conv2D(256, (1, 1), name='fpn_c2p2')(C2)])
+            KL.Conv2D(config.NUM_FILTERS_CONV, (1, 1), name='fpn_c2p2')(C2)])
         # Attach 3x3 conv to all P layers to get the final feature maps.
-        P2 = KL.Conv2D(256, (3, 3), padding="SAME", name="fpn_p2")(P2)
-        P3 = KL.Conv2D(256, (3, 3), padding="SAME", name="fpn_p3")(P3)
-        P4 = KL.Conv2D(256, (3, 3), padding="SAME", name="fpn_p4")(P4)
-        P5 = KL.Conv2D(256, (3, 3), padding="SAME", name="fpn_p5")(P5)
+        P2 = KL.Conv2D(config.NUM_FILTERS_CONV, (3, 3), padding="SAME", name="fpn_p2")(P2)
+        P3 = KL.Conv2D(config.NUM_FILTERS_CONV, (3, 3), padding="SAME", name="fpn_p3")(P3)
+        P4 = KL.Conv2D(config.NUM_FILTERS_CONV, (3, 3), padding="SAME", name="fpn_p4")(P4)
+        P5 = KL.Conv2D(config.NUM_FILTERS_CONV, (3, 3), padding="SAME", name="fpn_p5")(P5)
         # P6 is used for the 5th anchor scale in RPN. Generated by
         # subsampling from P5 with stride of 2.
         P6 = KL.MaxPooling2D(pool_size=(1, 1), strides=2, name="fpn_p6")(P5)
@@ -2261,7 +2262,8 @@ class MaskRCNN():
 
         # RPN Model
         rpn = build_rpn_model(config.RPN_ANCHOR_STRIDE,
-                              len(config.RPN_ANCHOR_RATIOS), 256)
+                              len(config.RPN_ANCHOR_RATIOS), config.RPN_MODEL_FILTERS)
+        
         # Loop through pyramid layers
         layer_outputs = []  # list of lists
         for p in rpn_feature_maps:
@@ -2325,7 +2327,9 @@ class MaskRCNN():
                                               config.MASK_POOL_SIZE,
                                               config.NUM_CLASSES,
                                               config.BACKBONE,
-                                              train_bn=config.TRAIN_BN)
+                                              train_bn=config.TRAIN_BN,
+                                              fpn_mask_filters=config.FPN_MASK_FILTERS, 
+                                              transpose_conv_num=config.TRANSPOSE_CONV_NUM)
 
             # TODO: clean up (use tf.identify if necessary)
             output_rois = KL.Lambda(lambda x: x * 1, name="output_rois")(rois)

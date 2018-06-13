@@ -103,7 +103,14 @@ class CocoConfig(Config):
     IMAGE_MAX_DIM = 64
     TRAIN_ROIS_PER_IMAGE = 10
     MAX_GT_INSTANCES = 10
-    #IMAGE_RESIZE_MODE = "crop"
+    RPN_MODEL_FILTERS = 128
+    NUM_FILTERS_CONV=128
+    FPN_MASK_FILTERS=128
+    POST_NMS_ROIS_INFERENCE = 100
+    RPN_ANCHOR_STRIDE = 2
+    RPN_ANCHOR_RATIOS=[0.5, 1, 2]
+    TRANSPOSE_CONV_NUM=128
+    #IMAGE_RESIZE_MODE = "crop" --> have to adjust IMAGE_MIN_DIM to make that work!
 
     ## Losses
     LOSS_WEIGHTS = {
