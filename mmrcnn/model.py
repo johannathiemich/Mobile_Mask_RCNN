@@ -2377,7 +2377,9 @@ class MaskRCNN():
                                               config.MASK_POOL_SIZE,
                                               config.NUM_CLASSES,
                                               config.BACKBONE,
-                                              train_bn=config.TRAIN_BN)
+                                              train_bn=config.TRAIN_BN,
+                                              fpn_mask_filters=config.FPN_MASK_FILTERS, 
+                                              transpose_conv_num=config.TRANSPOSE_CONV_NUM)
 
             model = KM.Model([input_image, input_image_meta, input_anchors],
                              [detections, mrcnn_class, mrcnn_bbox,
