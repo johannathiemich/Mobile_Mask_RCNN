@@ -93,23 +93,23 @@ class CocoConfig(Config):
 
     ## Backbone Architecture
     BACKBONE = "mobilenetv1"
-    BACKBONE_STRIDES = [16, 32, 64, 128, 256]
+    BACKBONE_STRIDES = [4, 8, 16, 32, 64]
 
     ## Resolution
-    RES_FACTOR = 16
+    RES_FACTOR = 2
     IMAGE_MAX_DIM = 1024 // RES_FACTOR
-    RPN_ANCHOR_SCALES = tuple(np.divide((16, 32, 64, 128, 256),RES_FACTOR))
-    IMAGE_MIN_DIM = 50
-    IMAGE_MAX_DIM = 64
-    TRAIN_ROIS_PER_IMAGE = 10
-    MAX_GT_INSTANCES = 10
-    RPN_MODEL_FILTERS = 64
-    NUM_FILTERS_CONV=64
-    FPN_MASK_FILTERS=64
-    POST_NMS_ROIS_INFERENCE = 100
-    RPN_ANCHOR_STRIDE = 2
-    RPN_ANCHOR_RATIOS=[0.5, 1, 2]
-    TRANSPOSE_CONV_NUM=64
+    RPN_ANCHOR_SCALES = tuple(np.divide((32, 64, 128, 256, 512),RES_FACTOR))
+    #IMAGE_MIN_DIM = 800
+    #IMAGE_MAX_DIM = 1024
+    #TRAIN_ROIS_PER_IMAGE = 100
+    #MAX_GT_INSTANCES = 10
+    RPN_MODEL_FILTERS = 16
+    NUM_FILTERS_CONV=16
+    FPN_MASK_FILTERS=256
+    #POST_NMS_ROIS_INFERENCE = 1000
+    #RPN_ANCHOR_STRIDE = 2
+    #RPN_ANCHOR_RATIOS=[0.5, 1, 2]
+    TRANSPOSE_CONV_NUM=256
     #IMAGE_RESIZE_MODE = "crop" --> have to adjust IMAGE_MIN_DIM to make that work!
 
     ## Losses
@@ -122,11 +122,11 @@ class CocoConfig(Config):
     }
 
     ## Steps
-    STEPS_PER_EPOCH = 1000
+    STEPS_PER_EPOCH = 10000
     VALIDATION_STEPS = 50
 
     ## Additions
-    TRAIN_BN = False
+    TRAIN_BN = True
 
 
 ############################################################
