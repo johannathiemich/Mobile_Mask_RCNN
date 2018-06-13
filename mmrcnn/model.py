@@ -2221,9 +2221,9 @@ class MaskRCNN():
         if config.BACKBONE in ["resnet50", "resnet101"]:
             _, C2, C3, C4, C5 = resnet_graph(input_image, config.BACKBONE, stage5=True, train_bn=config.TRAIN_BN)
         elif config.BACKBONE in ["mobilenetv1"]:
-            _, C2, C3, C4, C5 = mobilenetv1_graph(input_image, config.BACKBONE, alpha=1.0, train_bn=config.TRAIN_BN)
+            _, C2, C3, C4, C5 = mobilenetv1_graph(input_image, config.BACKBONE, alpha=0.1, train_bn=config.TRAIN_BN)
         elif config.BACKBONE in ["mobilenetv2"]:
-            _, C2, C3, C4, C5 = mobilenetv2_graph(input_image, config.BACKBONE, alpha=1.0, train_bn=config.TRAIN_BN)
+            _, C2, C3, C4, C5 = mobilenetv2_graph(input_image, config.BACKBONE, alpha=0.1, train_bn=config.TRAIN_BN)
         # Top-down Layers
         # TODO: add assert to varify feature map sizes match what's in config
         P5 = KL.Conv2D(config.NUM_FILTERS_CONV, (1, 1), name='fpn_c5p5')(C5)
