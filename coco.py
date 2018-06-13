@@ -96,7 +96,7 @@ class CocoConfig(Config):
     BACKBONE_STRIDES = [4, 8, 16, 32, 64]
 
     ## Resolution
-    RES_FACTOR = 2
+    RES_FACTOR = 8
     IMAGE_MAX_DIM = 1024 // RES_FACTOR
     RPN_ANCHOR_SCALES = tuple(np.divide((32, 64, 128, 256, 512),RES_FACTOR))
     #IMAGE_MIN_DIM = 800
@@ -105,11 +105,11 @@ class CocoConfig(Config):
     #MAX_GT_INSTANCES = 10
     RPN_MODEL_FILTERS = 16
     NUM_FILTERS_CONV=16
-    FPN_MASK_FILTERS=256
-    #POST_NMS_ROIS_INFERENCE = 1000
+    FPN_MASK_FILTERS=16
+    POST_NMS_ROIS_INFERENCE = 10
     #RPN_ANCHOR_STRIDE = 2
     #RPN_ANCHOR_RATIOS=[0.5, 1, 2]
-    TRANSPOSE_CONV_NUM=256
+    TRANSPOSE_CONV_NUM=16
     #IMAGE_RESIZE_MODE = "crop" --> have to adjust IMAGE_MIN_DIM to make that work!
 
     ## Losses
