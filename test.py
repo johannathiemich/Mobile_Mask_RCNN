@@ -31,7 +31,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'teddy bear', 'hair drier', 'toothbrush']
 
 config = coco.CocoConfig()
-model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-06__13_36_18.h5")
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-13__10_30_54.h5")
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
@@ -44,12 +44,14 @@ print("successfully loaded model")
 
 image = cv2.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
 height, width = image.shape[:2]
-if height > width:
-    r = 64 / height
-    small = cv2.resize(image, (int(width * r)  , 64))
-else:
-    r = 64 / width
-    small = cv2.resize(image, (64, int(height * r)))
+print("height:", height)
+print("widht:", width)
+#if height > width:
+#    r = 64 / height
+#    small = cv2.resize(image, (int(width * r)  , 64))
+#else:
+#    r = 64 / width
+#    small = cv2.resize(image, (64, int(height * r)))
 if image is None: 
     print("image is null")
 #image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "gray.jpg"))
@@ -58,7 +60,7 @@ if image is None:
 
 # Run detection
 start = datetime.now()
-result = model.detect([small], verbose=1)
+result = model.detect([image], verbose=1)
 print("Time taken for detection: {}".format(datetime.now() - start))
 
 r = result[0]
