@@ -1,7 +1,5 @@
 from mmrcnn import model as modellib, visualize
 import os
-import sys
-import numpy as np
 import coco
 import skimage.io
 from datetime import datetime
@@ -21,7 +19,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed',
                'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
                'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
-               'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',               'teddy bear', 'hair drier', 'toothbrush']
+               'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
 config = coco.CocoConfig()
 model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-14__11_12_46.h5")

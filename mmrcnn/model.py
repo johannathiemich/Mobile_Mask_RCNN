@@ -23,6 +23,10 @@ import multiprocessing
 import numpy as np
 import skimage.transform
 import tensorflow as tf
+config = tf.ConfigProto()
+config.gpu_options.per_process_gpu_memory_fraction = 0.3
+config.gpu_options.visible_device_list = "0"
+session = tf.Session(config=config)
 import keras
 import keras.backend as K
 import keras.layers as KL
