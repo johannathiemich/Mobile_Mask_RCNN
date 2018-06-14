@@ -196,6 +196,7 @@ class Config(object):
     # Gradient norm clipping
     GRADIENT_CLIP_NORM = 5.0
     NUM_FILTERS_CONV=256
+    RPN_MODEL_FILTERS=256
     #RPN_MODEL_FILTERS=256
     FPN_MASK_FILTERS = 256
     TRANSPOSE_CONV_NUM=256
