@@ -26,7 +26,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
 
 config = coco.CocoConfig()
 
-model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-14__15_10_33.h5")
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-14__15_23_07.h5")
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
@@ -36,7 +36,8 @@ model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR
 print("successfully loaded model")
 
 #image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
-image = cv2.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
+#image = cv2.imread(os.path.join(TEST_PIC_DIR, "street" + str(4) + ".jpg"))
+image = cv2.imread(os.path.join(TEST_PIC_DIR, "bayer.jpg"))
 #cv2.imshow("big", image)
 #cv2.waitKey(0)
 height, width = image.shape[:2]
