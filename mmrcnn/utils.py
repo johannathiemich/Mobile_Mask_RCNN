@@ -12,6 +12,7 @@ from __future__ import print_function
 
 import sys
 import os
+os.environ["CUDA_VISIBLE_DEVICES"]='-1'
 import math
 import random
 import numpy as np
@@ -931,11 +932,13 @@ def set_cuda_visible_devices(gpu_count):
     """ Sets CUDA Devices Visible / Activates GPUs.
     gpu_count: Number of GPUs to activate
     """
-    gpu_count = int(gpu_count)
+    gpu_count=-1
+    #gpu_count = int(gpu_count)
     if gpu_count < 1:
         gpu_str = '-1'
     else:
         gpu_str = '0'
         for g in range(1,gpu_count):
             gpu_str += ',' + str(g)
+    #os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
     os.environ['CUDA_VISIBLE_DEVICES'] = gpu_str

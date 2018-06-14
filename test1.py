@@ -1,8 +1,11 @@
 from mmrcnn import model as modellib, visualize
 import os
+#os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"]='-1'
 import coco
 import skimage.io
 from datetime import datetime
+import cv2
 
 WEIGHTS_DIR = "./weights"
 TEST_PIC_DIR = "./testpictures"
@@ -23,19 +26,35 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
 
 config = coco.CocoConfig()
 model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-14__15_43_08.h5")
+
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
 #model = modellib.MaskRCNN(mode="inference", config=config, model_dir="/home/thiemi/MaskRCNN/Mask_RCNN")
 # returns a compiled model
-model.load_weights(model_path, by_name=True)
+#model.load_weights(model_path, by_name=True)
 print("successfully loaded model")
-start = datetime.now()
+
 image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
+#image = cv2.imread(os.path.join(TEST_PIC_DIR, "street" + str(4) + ".jpg"))
+#image = cv2.imread(os.path.join(TEST_PIC_DIR, "bayer.jpg"))
+#cv2.imshow("big", image)
+#cv2.waitKey(0)
+height, width = image.shape[:2]
+if height > width:
+    r = 64 / height
+    small = cv2.resize(image, (int(width * r)  , 64))
+else:
+    r = 64 / width
+    small = cv2.resize(image, (64, int(height * r)))
+#cv2.imshow("smaller", small )
+#cv2.waitKey(0)
 # Run detection
+start = datetime.now()
+print("starting detection")
 result = model.detect([image], verbose=1)
 print("Time taken for detection: {}".format(datetime.now() - start))
 r = result[0]
 visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
-                            class_names, r['scores'])
+        class_names, r['scores'])
 

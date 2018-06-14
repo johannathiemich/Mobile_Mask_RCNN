@@ -31,7 +31,11 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'teddy bear', 'hair drier', 'toothbrush']
 
 config = coco.CocoConfig()
+<<<<<<< HEAD
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-13__11_02_08.h5")
+=======
 model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-13__15_20_23.h5")
+>>>>>>> 536f2b4cf039aaa66c898f02c27d7212ec378360
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
@@ -44,10 +48,13 @@ print("successfully loaded model")
 
 image = cv2.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
 height, width = image.shape[:2]
+<<<<<<< HEAD
+=======
 print("height:", height)
 print("widht:", width)
 cv2.imshow("before", image)
 cv2.waitKey(0)
+>>>>>>> 536f2b4cf039aaa66c898f02c27d7212ec378360
 if height > width:
     r = 64 / height
     small = cv2.resize(image, (int(width * r)  , 64))

@@ -34,6 +34,7 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+os.environ["CUDA_VISIBLE_DEVICES"]='-1'
 import sys
 import time
 import numpy as np
@@ -86,7 +87,7 @@ class CocoConfig(Config):
 
     ## GPU
     IMAGES_PER_GPU = 1
-    GPU_COUNT = 1
+    GPU_COUNT = 0
 
     ## Number of classes (including background)
     NUM_CLASSES = 1 + 80
