@@ -25,7 +25,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',               'teddy bear', 'hair drier', 'toothbrush']
 
 config = coco.CocoConfig()
-model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-13__14_51_28.h5")
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-13__15_12_21.h5")
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
@@ -50,9 +50,9 @@ cv2.imshow("smaller", small )
 # Run detection
 start = datetime.now()
 print("starting detection")
-result = model.detect([small], verbose=1)
+#result = model.detect([small], verbose=1)
 print("Time taken for detection: {}".format(datetime.now() - start))
-r = result[0]
-visualize.display_instances(small, r['rois'], r['masks'], r['class_ids'], 
-                            class_names, r['scores'])
+#r = result[0]
+#visualize.display_instances(small, r['rois'], r['masks'], r['class_ids'], 
+#                            class_names, r['scores'])
 
