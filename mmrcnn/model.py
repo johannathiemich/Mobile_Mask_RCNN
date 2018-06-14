@@ -23,6 +23,11 @@ import multiprocessing
 import numpy as np
 import skimage.transform
 import tensorflow as tf
+#config = tf.ConfigProto()
+#config.gpu_options.per_process_gpu_memory_fraction = 0.9
+#config.gpu_options.visible_device_list = "0"
+#config.gpu_options.allow_growth = True
+#session = tf.Session(config=config)
 import keras
 import keras.backend as K
 import keras.layers as KL
@@ -2390,7 +2395,7 @@ class MaskRCNN():
         if config.GPU_COUNT > 1:
             from mmrcnn.parallel_model import ParallelModel
             model = ParallelModel(model, config.GPU_COUNT)
-        else:
+        else: 
             utils.set_cuda_visible_devices(config.GPU_COUNT)
 
         return model

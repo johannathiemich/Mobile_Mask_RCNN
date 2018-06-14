@@ -1,7 +1,7 @@
 from mmrcnn import model as modellib, visualize
 import os
-import sys
-import numpy as np
+#os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"]="-1"
 import coco
 import skimage.io
 from datetime import datetime
@@ -22,16 +22,17 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed',
                'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
                'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
-               'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',               'teddy bear', 'hair drier', 'toothbrush']
+               'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
 config = coco.CocoConfig()
-model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-14__11_12_46.h5")
+
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-13__11_02_08.h5")
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
 #model = modellib.MaskRCNN(mode="inference", config=config, model_dir="/home/thiemi/MaskRCNN/Mask_RCNN")
 # returns a compiled model
-model.load_weights(model_path, by_name=True)
+#model.load_weights(model_path, by_name=True)
 print("successfully loaded model")
 
 #image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))

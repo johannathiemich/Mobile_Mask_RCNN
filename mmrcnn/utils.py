@@ -938,4 +938,5 @@ def set_cuda_visible_devices(gpu_count):
         gpu_str = '0'
         for g in range(1,gpu_count):
             gpu_str += ',' + str(g)
-    os.environ['CUDA_VISIBLE_DEVICES'] = gpu_str
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+    #os.environ['CUDA_VISIBLE_DEVICES'] = gpu_str
