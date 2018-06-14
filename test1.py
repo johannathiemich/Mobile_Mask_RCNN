@@ -26,7 +26,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
 
 config = coco.CocoConfig()
 
-model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-05__16_15_42.h5")
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-14__15_10_33.h5")
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
@@ -54,6 +54,6 @@ print("starting detection")
 result = model.detect([image], verbose=1)
 print("Time taken for detection: {}".format(datetime.now() - start))
 r = result[0]
-visualize.display_instances(small, r['rois'], r['masks'], r['class_ids'], 
+visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], 
         class_names, r['scores'])
 
