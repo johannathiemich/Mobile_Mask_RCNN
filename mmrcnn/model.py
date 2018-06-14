@@ -13,6 +13,7 @@ from __future__ import print_function
 ## standard Mask R-CNN Imports
 import sys
 import os
+os.environ["CUDA_VISIBLE_DEVICES"]='-1'
 import random
 import datetime
 import re
@@ -25,7 +26,7 @@ import skimage.transform
 import tensorflow as tf
 #config = tf.ConfigProto()
 #config.gpu_options.per_process_gpu_memory_fraction = 0.9
-#config.gpu_options.visible_device_list = "0"
+#config.gpu_options.visible_device_list = "-1"
 #config.gpu_options.allow_growth = True
 #session = tf.Session(config=config)
 import keras

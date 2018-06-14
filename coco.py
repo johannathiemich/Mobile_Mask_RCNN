@@ -34,6 +34,7 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+os.environ["CUDA_VISIBLE_DEVICES"]='-1'
 import sys
 import time
 import numpy as np
@@ -86,7 +87,7 @@ class CocoConfig(Config):
 
     ## GPU
     IMAGES_PER_GPU = 1
-    GPU_COUNT = 1
+    GPU_COUNT = 0
 
     ## Number of classes (including background)
     NUM_CLASSES = 1 + 80
@@ -96,7 +97,7 @@ class CocoConfig(Config):
     BACKBONE_STRIDES = [4, 8, 16, 32, 64]
 
     ## Resolution
-    RES_FACTOR = 16
+    RES_FACTOR = 2
     IMAGE_MAX_DIM = 1024 // RES_FACTOR
     RPN_ANCHOR_SCALES = tuple(np.divide((32, 64, 128, 256, 512),RES_FACTOR))
     #IMAGE_MIN_DIM = 800

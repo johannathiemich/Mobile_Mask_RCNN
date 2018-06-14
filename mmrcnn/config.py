@@ -203,8 +203,8 @@ class Config(object):
     def __init__(self):
         """Set values of computed attributes."""
         # Effective batch size
-        self.BATCH_SIZE = self.IMAGES_PER_GPU * self.GPU_COUNT
-
+        #self.BATCH_SIZE = self.IMAGES_PER_GPU * self.GPU_COUNT
+        self.BATCH_SIZE = 1
         # Input image size
         if self.IMAGE_RESIZE_MODE == "crop":
             self.IMAGE_SHAPE = np.array([self.IMAGE_MIN_DIM, self.IMAGE_MIN_DIM, 3])

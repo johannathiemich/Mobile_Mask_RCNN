@@ -1,7 +1,7 @@
 from mmrcnn import model as modellib, visualize
 import os
 #os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="-1"
+os.environ["CUDA_VISIBLE_DEVICES"]='-1'
 import coco
 import skimage.io
 from datetime import datetime
@@ -26,7 +26,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
 
 config = coco.CocoConfig()
 
-model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-13__11_02_08.h5")
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-05__16_15_42.h5")
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
 model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR)
@@ -37,7 +37,7 @@ print("successfully loaded model")
 
 #image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
 image = cv2.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
-cv2.imshow("big", image)
+#cv2.imshow("big", image)
 #cv2.waitKey(0)
 height, width = image.shape[:2]
 if height > width:
@@ -46,12 +46,12 @@ if height > width:
 else:
     r = 64 / width
     small = cv2.resize(image, (64, int(height * r)))
-cv2.imshow("smaller", small )
+#cv2.imshow("smaller", small )
 #cv2.waitKey(0)
 # Run detection
 start = datetime.now()
 print("starting detection")
-result = model.detect([small], verbose=1)
+result = model.detect([image], verbose=1)
 print("Time taken for detection: {}".format(datetime.now() - start))
 r = result[0]
 visualize.display_instances(small, r['rois'], r['masks'], r['class_ids'], 
