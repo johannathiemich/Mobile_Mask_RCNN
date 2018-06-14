@@ -35,9 +35,9 @@ model = modellib.MaskRCNN(mode="inference", config=config, model_dir=WEIGHTS_DIR
 #model.load_weights(model_path, by_name=True)
 print("successfully loaded model")
 
-#image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
+image = skimage.io.imread(os.path.join(TEST_PIC_DIR, "street" + str(7) + ".jpg"))
 #image = cv2.imread(os.path.join(TEST_PIC_DIR, "street" + str(4) + ".jpg"))
-image = cv2.imread(os.path.join(TEST_PIC_DIR, "bayer.jpg"))
+#image = cv2.imread(os.path.join(TEST_PIC_DIR, "bayer.jpg"))
 #cv2.imshow("big", image)
 #cv2.waitKey(0)
 height, width = image.shape[:2]
