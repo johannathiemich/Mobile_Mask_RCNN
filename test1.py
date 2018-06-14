@@ -25,7 +25,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
 config = coco.CocoConfig()
-model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-14__15_43_08.h5")
+model_path = model_path = os.path.join(WEIGHTS_DIR, "trained_coco_2018-Jun-14__17_39_03.h5")
 
 #model_path = "/home/thiemi/MaskRCNN/Mask_RCNN/mask_rcnn_coco.h5"
 
